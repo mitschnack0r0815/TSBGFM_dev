@@ -1,3 +1,5 @@
+/* DO NOT USE ANY DATA MANIPULATION IN THE FRONTEND LIBRARY */  
+
 export const CombatLib = {
 
     /**

@@ -1,6 +1,9 @@
 import express from 'express';
-import testRoutes from './routes/test_route.js';
 import { connectDB, getDB } from './controllers/mongodb.js';
+
+import testRoutes from './routes/test_route.js';
+import charactersRoute from './routes/characters.js';
+
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -9,6 +12,8 @@ app.use(express.json());
 
 // Use API routes
 app.use('/api', testRoutes);
+// Use the characters route
+app.use('/api/characters', charactersRoute);
 
 connectDB().then(() => {
     app.get('/', async (req, res) => {
