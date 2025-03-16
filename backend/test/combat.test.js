@@ -4,33 +4,49 @@ import Char from '../models/char.js';
 import { CombatLib } from '../lib/combat.js';
 
 describe('CombatLib', () => {
+    let playerA, playerB;
+
     before(async () => {
         await mongoose.connect('mongodb://localhost:27017/TSBGFM', {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });
-    });
 
-    after(async () => {
-        await mongoose.connection.close();
-    });
+        // Check for existing characters
+        playerA = await Char.findOne({ name: 'Player A' });
+        playerB = await Char.findOne({ name: 'Player B' });
 
-    describe('combat', () => {
-        it('should simulate a combat between two players', async () => {
-            const playerA = new Char({
+        // Create characters if they don't exist
+        if (!playerA) {
+            playerA = new Char({
                 name: 'Player A',
                 life: 100,
                 armor: 1,
                 weapon: { name: 'Sword', dice: '1W6', type: 'Sword', initiative: 5 }
             });
+            await playerA.save();
+        }
 
-            const playerB = new Char({
+        if (!playerB) {
+            playerB = new Char({
                 name: 'Player B',
                 life: 100,
                 armor: 1,
-                weapon: { name: 'Axe', damage: '1W12', type: 'Axe', initiative: 1 }
+                weapon: { name: 'Axe', dice: '1W12', type: 'Axe', initiative: 1 }
             });
+            await playerB.save();
+        }
+    });
 
+    after(async () => {
+        // Save the updated characters back to the database
+        // await playerA.save();
+        // await playerB.save();
+        await mongoose.connection.close();
+    });
+
+    describe('combat', () => {
+        it('should simulate a combat between two players', async () => {
             const results = CombatLib.combat(playerA, playerB);
 
             expect(results).to.be.an('array');

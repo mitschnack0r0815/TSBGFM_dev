@@ -57,29 +57,25 @@ export const CombatLib = {
         }
         console.log(`${attacker.name} goes first!`);
 
-        // Attack the defender
-        let attackRoll = this.rollDice(playerA.weapon.dice).total;
-        if (attackRoll >= defender.armor) {
-            // Hit! Calculate damage
-            const damage = Math.max(0, attackRoll - defender.armor);
-            defender.life -= damage;
-            console.log(`${attacker.name} hits ${defender.name} for ${damage} damage!`);
-        } else {
-            // Miss!
-            console.log(`${attacker.name} misses ${defender.name}!`);
-        }
+        const attack = (attacker, defender) => {
+            const attackRoll = this.rollDice(attacker.weapon.dice).total;
+            if (attackRoll >= defender.armor) {
+                // Hit! Calculate damage
+                const damage = Math.max(0, attackRoll - defender.armor);
+                defender.life -= damage;
+                console.log(`${attacker.name} hits ${defender.name} for ${damage} damage!`);
+            } else {
+                // Miss!
+                console.log(`${attacker.name} misses ${defender.name}!`);
+            }
+        };
+
+        // Attacker attacks defender
+        attack(attacker, defender);
         if (defender.life <= 0) return;
 
-        attackRoll = this.rollDice(playerB.weapon.dice).total;
-        if (attackRoll >= attacker.armor) {
-            // Hit! Calculate damage
-            const damage = Math.max(0, attackRoll - attacker.armor);
-            attacker.life -= damage;
-            console.log(`${defender.name} hits ${attacker.name} for ${damage} damage!`);
-        } else {
-            // Miss!
-            console.log(`${defender.name} misses ${attacker.name}!`);
-        }
+        // Defender attacks attacker
+        attack(defender, attacker);
         if (attacker.life <= 0) return;
     },
 
