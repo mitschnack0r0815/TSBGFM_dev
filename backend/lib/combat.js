@@ -62,7 +62,7 @@ export const CombatLib = {
             if (attackRoll >= defender.armor) {
                 // Hit! Calculate damage
                 const damage = Math.max(0, attackRoll - defender.armor);
-                defender.life -= damage;
+                defender.life = Math.max(0, defender.life - damage);
                 console.log(`${attacker.name} hits ${defender.name} for ${damage} damage!`);
             } else {
                 // Miss!
@@ -72,11 +72,18 @@ export const CombatLib = {
 
         // Attacker attacks defender
         attack(attacker, defender);
-        if (defender.life <= 0) return;
+        if (defender.life <= 0) return {
+            playerA: playerA.life,
+            playerB: playerB.life
+        };
 
         // Defender attacks attacker
         attack(defender, attacker);
-        if (attacker.life <= 0) return;
+
+        return {
+            playerA: playerA.life,
+            playerB: playerB.life
+        };
     },
 
     combat(playerA, playerB) {
@@ -85,6 +92,7 @@ export const CombatLib = {
             console.log(`### Round ${results.length + 1} ###`);
             console.log(`${playerA.name} (${playerA.life} HP) vs. ${playerB.name} (${playerB.life} HP)`);
             results.push(this.combatRound(playerA, playerB));
+            console.log(results[results.length - 1]);
             console.log();
         }
         console.log(`${playerA.life <= 0 ? playerB.name : playerA.name} wins!`);

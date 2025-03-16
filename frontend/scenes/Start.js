@@ -10,13 +10,6 @@ export class Start extends Phaser.Scene {
         super('Start');
     }
 
-    create_panel (x,y)
-    {
-        const panel = this.add.image(x, y, 'panel_brown');
-        panel.setDisplaySize(300, 200);
-        return panel;
-    }
-
     // Function to call the backend API and handle the response
     async fetchBackendData() {
         console.log('test_api');
@@ -84,6 +77,13 @@ export class Start extends Phaser.Scene {
                 this.scene.start('Battle', data);
             });
         });
+    }
+
+    create_panel (x,y)
+    {
+        const panel = this.add.image(x, y, 'panel_brown');
+        panel.setDisplaySize(300, 200);
+        return panel;
     }
 
     createDropdown(id, x, y, characters) {
