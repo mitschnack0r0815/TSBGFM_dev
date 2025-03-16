@@ -11,7 +11,7 @@ export class Start extends Phaser.Scene {
 
     // Function to call the backend API and handle the response
     async fetchBackendData() {
-        console.log('fetchBackendData');
+        console.log('test_api');
         try {
             const response = await axios.get('/api/test');
             console.log('Backend response:', response.data);  // Logs the data from your backend
@@ -51,7 +51,10 @@ export class Start extends Phaser.Scene {
 
     create() 
     {
-        this.test_me();
+        // this.fetchDiceRoll('2W12').then(result => {
+        //     if (result) console.log(`Rolled dice: ${result.total} - ${result.results}`);
+        // });
+
         this.fetchBackendData();
 
         this.cameras.main.setBackgroundColor('#808080');
