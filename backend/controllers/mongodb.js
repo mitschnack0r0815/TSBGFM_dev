@@ -1,17 +1,19 @@
-import { MongoClient } from 'mongodb';
+import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const uri = process.env.MONGODB_URI; // Your MongoDB connection string
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-let db;
+const db = mongoose.connection;
 
 export async function connectDB() {
+    if (db.readyState === 1) {
+        console.log('Already connected to MongoDB');
+        return;
+    }
+
     try {
-        await client.connect();
-        db = client.db(process.env.DB_NAME); // Your database name
+        console.log(`${process.env.MONGODB_URI}${process.env.DB_NAME}`);
+        await mongoose.connect(`${process.env.MONGODB_URI}${process.env.DB_NAME}`);
         console.log('Connected to MongoDB');
     } catch (error) {
         console.error('Error connecting to MongoDB', error);
@@ -19,8 +21,40 @@ export async function connectDB() {
 }
 
 export function getDB() {
-    if (!db) {
+    if (db.readyState !== 1) {
         throw new Error('Database not connected');
     }
     return db;
+}
+
+export async function createDocument(document) {
+    try {
+        const collection = getDB().collection('data_collection');
+        const result = await collection.insertOne(document);
+        if (result.insertedCount === 0) {
+            throw new Error('Document insertion failed');
+        }
+        console.log('Document inserted:', result);
+        return result;
+    } catch (error) {
+        console.error('Error inserting document:', error);
+        throw error;
+    }
+}
+
+export async function getFirstDocument() {
+    try {
+        const collection = getDB().collection('data_collection');
+        const document = await collection.findOne({});
+        if (!document) {
+            console.log('No document found in data_collection');
+            return null;
+        }
+        console.log('Document:', document);
+        console.log('Type of document:', typeof document);
+        return document;
+    } catch (error) {
+        console.error('Error fetching document:', error);
+        throw error;
+    }
 }

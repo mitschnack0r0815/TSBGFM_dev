@@ -20,7 +20,8 @@ export const CombatLib = {
         const match = notation.match(/^(\d+)W(\d+)$/i);
         if (!match) throw new Error("Invalid dice notation. Use format like '2W12'.");
     
-        const [_, rolls, sides] = match.map(Number);
+        const rolls = parseInt(match[1], 10);
+        const sides = parseInt(match[2], 10);
         let total = 0;
         let results = [];
     
@@ -29,7 +30,8 @@ export const CombatLib = {
             results.push(roll);
             total += roll;
         }
-    
+        
+        console.log(`Rolled ${rolls}d${sides}: ${results.join(', ')} (Total: ${total})`);
         return { total, results };
     },
     
@@ -38,5 +40,59 @@ export const CombatLib = {
     randomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     },
+
+    combatRound(playerA, playerB) {
+        // Roll for initiative
+        const playerAInitiative = this.randomInt(1, 10) + playerA.weapon.initiative;
+        const playerBInitiative = this.randomInt(1, 10) + playerB.weapon.initiative;
+
+        // Determine order of attack
+        let attacker, defender;
+        if (playerAInitiative >= playerBInitiative) {
+            attacker = playerA;
+            defender = playerB;
+        } else {
+            attacker = playerB;
+            defender = playerA;
+        }
+        console.log(`${attacker.name} goes first!`);
+
+        // Attack the defender
+        let attackRoll = this.rollDice(playerA.weapon.dice).total;
+        if (attackRoll >= defender.armor) {
+            // Hit! Calculate damage
+            const damage = Math.max(0, attackRoll - defender.armor);
+            defender.life -= damage;
+            console.log(`${attacker.name} hits ${defender.name} for ${damage} damage!`);
+        } else {
+            // Miss!
+            console.log(`${attacker.name} misses ${defender.name}!`);
+        }
+        if (defender.life <= 0) return;
+
+        attackRoll = this.rollDice(playerB.weapon.dice).total;
+        if (attackRoll >= attacker.armor) {
+            // Hit! Calculate damage
+            const damage = Math.max(0, attackRoll - attacker.armor);
+            attacker.life -= damage;
+            console.log(`${defender.name} hits ${attacker.name} for ${damage} damage!`);
+        } else {
+            // Miss!
+            console.log(`${defender.name} misses ${attacker.name}!`);
+        }
+        if (attacker.life <= 0) return;
+    },
+
+    combat(playerA, playerB) {
+        const results = [];
+        while (playerA.life > 0 && playerB.life > 0) {
+            console.log(`### Round ${results.length + 1} ###`);
+            console.log(`${playerA.name} (${playerA.life} HP) vs. ${playerB.name} (${playerB.life} HP)`);
+            results.push(this.combatRound(playerA, playerB));
+            console.log();
+        }
+        console.log(`${playerA.life <= 0 ? playerB.name : playerA.name} wins!`);
+        return results;
+    }
 
 };

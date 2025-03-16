@@ -13,7 +13,7 @@ app.use('/api', testRoutes);
 connectDB().then(() => {
     app.get('/', async (req, res) => {
         const db = getDB();
-        const collection = db.collection('myCollection');
+        const collection = db.collection('data_collection');
         const data = await collection.find({}).toArray();
         res.send(data);
     });
