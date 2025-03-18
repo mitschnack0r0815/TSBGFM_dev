@@ -11,7 +11,7 @@ import { GameLib } from '../lib/game.js';
 
 describe('StartGame', () => {
     let charNames = ['Player A', 'Player B'];
-    let game, board, playerA, playerB;
+    let game;
 
     before(async () => {
         game = await GameLib.createGame(charNames);

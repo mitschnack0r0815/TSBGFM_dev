@@ -4,7 +4,7 @@ import Board from '../models/board.js';
 
 const router = express.Router();
 
-// Endpoint to start a new game
+// Endpoint to fethc game state
 router.get('/', async (req, res) => {
     try {
         let board = handleBoard();

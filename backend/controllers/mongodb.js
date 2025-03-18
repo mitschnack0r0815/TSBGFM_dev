@@ -58,3 +58,17 @@ export async function getFirstDocument() {
         throw error;
     }
 }
+
+export const checkDBConnection = async (req, res, next) => {
+    if (mongoose.connection.readyState !== 1) { // 1 means connected
+        console.log('Database not connected. Reconnecting...');
+        try {
+            await connectDB();
+            console.log('Database reconnected successfully.');
+        } catch (error) {
+            console.error('Failed to reconnect to the database:', error);
+            return res.status(500).json({ error: 'Failed to reconnect to the database' });
+        }
+    }
+    next();
+};
