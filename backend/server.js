@@ -2,8 +2,9 @@ import express from 'express';
 import { connectDB, getDB } from './controllers/mongodb.js';
 
 import testRoutes from './routes/test_route.js';
-import charactersRoute from './routes/characters.js';
-import combatRoute from './routes/combat.js';
+import charactersRoute from './routes/Characters.js';
+import combatRoute from './routes/Combat.js';
+import gameStateRoute from './routes/GameState.js'; 
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -11,19 +12,13 @@ const port = process.env.PORT || 3001;
 app.use(express.json());
 
 // Use API routes
-app.use('/api/characters', charactersRoute);
+app.use('/api/getCharacters', charactersRoute);
 app.use('/api/combat', combatRoute);
+app.use('/api/getGameState', gameStateRoute);
 // Test route
 app.use('/api', testRoutes);
 
 connectDB().then(() => {
-    // app.get('/', async (req, res) => {
-    //     const db = getDB();
-    //     const collection = db.collection('data_collection');
-    //     const data = await collection.find({}).toArray();
-    //     res.send(data);
-    // });
-
     app.listen(port, () => {
         console.log(`Server is running on port ${port}`);
     });

@@ -20,8 +20,13 @@ const charSchema = new mongoose.Schema({
   weapon: {
     type: weaponSchema,
     required: true,
-    default: () => ({ name: 'None', dice: 'None', type: 'None' })
-  }
+    default: () => ({ name: 'Test', dice: '1W6', initiative: 5, type: 'Sword' })
+  },
+  position: {
+    type: [Number],
+    required: true,
+    default: () => [0, 0]
+  },
 });
 
 // Instance method to check if the character has no life left

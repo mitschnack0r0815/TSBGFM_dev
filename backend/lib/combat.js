@@ -1,3 +1,5 @@
+import Char from '../models/char.js';
+
 export const CombatLib = {
 
     /**
@@ -41,6 +43,13 @@ export const CombatLib = {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     },
 
+    /**
+     * Simulates a round of combat between two characters.
+     * 
+     * @param {Char} playerA - The first character
+     * @param {Char} playerB - The second character
+     * @returns {Object} - An object containing the remaining life of both characters
+     */
     combatRound(playerA, playerB) {
         // Roll for initiative
         const playerAInitiative = this.randomInt(1, 10) + playerA.weapon.initiative;
