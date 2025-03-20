@@ -1,8 +1,5 @@
 import mongoose from 'mongoose';
 
-import boardSchema from './board.js';
-import charSchema from './char.js';
-
 const gameSchema = new mongoose.Schema({
   gameNumber: {
     type: Number,
@@ -10,7 +7,8 @@ const gameSchema = new mongoose.Schema({
     default: 0
   },
   board: {
-    type: boardSchema,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Board', // Reference the Board model
     required: true
   },
   chars: [{

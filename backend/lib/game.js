@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
 
 import Game from '../models/game.js';
-import boardSchema from '../models/board.js';
+import Board from '../models/board.js';
 import Char from '../models/char.js';
+import { BoardLib } from './board.js';
 
 export const GameLib = {
 
@@ -21,12 +22,13 @@ export const GameLib = {
 
         let highestIdGame = await Game.findOne().sort({ gameNumber: -1 }).exec();
         let newGameNumber = highestIdGame ? highestIdGame.gameNumber + 1 : 1;
+
+        let board = await Board.findOne().exec();
+        if (!board) board = BoardLib.createBoard(charNames.length);
+
         let game = new Game({
             gameNumber: newGameNumber,
-            board: {
-                x: 10,
-                y: 10
-            },
+            board: board,
             chars: chars
         });
 
@@ -47,7 +49,15 @@ export const GameLib = {
                     game.chars[1].position.y);
 
         try {
-            await game.save();
+            let existingGame = await Game.findOne({ gameNumber: 1 }).exec();
+            if (existingGame) {
+                existingGame.board = game.board;
+                existingGame.chars = game.chars;  
+                existingGame.save();
+            } else {
+                await game.save();
+            }
+            
             console.log('Game created...');
         } catch (error) {
             console.error('Error saving game:', error);

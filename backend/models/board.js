@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import terrainSchema  from './terrain.js';
 
 const boardSchema = new mongoose.Schema({
   x: {
@@ -11,6 +12,11 @@ const boardSchema = new mongoose.Schema({
     required: true,
     default: 10
   },
+  map: [[{
+    type: Number,
+    required: true,
+    default: 1
+  }]]
 });
 
-export default boardSchema;
+export default mongoose.model('Board', boardSchema);
