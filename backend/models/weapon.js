@@ -6,21 +6,31 @@ const weaponSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  dice: {
-    type: String,
-    required: true,
-    default: "1W6"
-  },
-  initiative: {
+  strength: {
     type: Number,
     required: true,
-    default: 5
+    default: 4
   },
-  type: {
-    type: String,
+  range: {
+    type: Number,
     required: true,
-    default: 'Sword'
-  }
+    default: 1
+  },
+  attacks: {
+    type: Number,
+    required: true,
+    default: 2
+  },
+  attackPower: {
+    type: Number,
+    required: true,
+    default: 1
+  },
+  critPower: {
+    type: Number,
+    required: true,
+    default: 2
+  },
 });
 
 export default weaponSchema;

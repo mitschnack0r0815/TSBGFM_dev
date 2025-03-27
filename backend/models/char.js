@@ -10,17 +10,27 @@ const charSchema = new mongoose.Schema({
   life: {
     type: Number,
     required: true,
-    default: 100
+    default: 10
   },
   armor: {
     type: Number,
     required: true,
-    default: 0
+    default: 3
   },
-  weapon: {
-    type: weaponSchema,
+  weapons: {
+    first: {
+      type: weaponSchema,
+      required: true
+    },
+    second: {
+      type: weaponSchema,
+      required: false
+    }
+  },
+  moveDistance: {
+    type: Number,
     required: true,
-    default: () => ({ name: 'Test', dice: '1W6', initiative: 5, type: 'Sword' })
+    default: 3
   },
   position: {
     x: {
@@ -35,10 +45,5 @@ const charSchema = new mongoose.Schema({
     }
   }
 });
-
-// Instance method to check if the character has no life left
-charSchema.methods.noLifeLeft = function() {
-  return this.life <= 0;
-};
 
 export default mongoose.model('Char', charSchema);

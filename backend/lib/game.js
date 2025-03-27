@@ -4,27 +4,41 @@ import Game from '../models/game.js';
 import Board from '../models/board.js';
 import Char from '../models/char.js';
 import { BoardLib } from './board.js';
+import char from '../models/char.js';
 
 export const GameLib = {
 
     async createGame(charNames) {
         let chars = [];
         
+        if (charNames.length > 4) {
+            console.error('Too many characters for a game');
+            return;
+        }
+
         for (const charname of charNames) {
             let char = await Char.findOne({ name: charname });
             chars.push(char);
         }        
-  
-        for (let i = 0; i < chars.length; i++) {
-            chars[i].position.x = 0;
-            chars[i].position.y = i;
-        }
 
         let highestIdGame = await Game.findOne().sort({ gameNumber: -1 }).exec();
         let newGameNumber = highestIdGame ? highestIdGame.gameNumber + 1 : 1;
 
         let board = await Board.findOne().exec();
         if (!board) board = BoardLib.createBoard(charNames.length);
+
+        // Those are set in BoardLib.createBoard
+        let corners = [
+            { x: 1, y: 1 },
+            { x: 8, y: 8 },
+            { x: 8, y: 1 },
+            { x: 1, y: 8 },
+        ];
+
+        for (let i = 0; i < chars.length; i++) {
+            chars[i].position = corners[i];
+            chars[i].save();
+        }
 
         let game = new Game({
             gameNumber: newGameNumber,

@@ -3,7 +3,7 @@ import { connectDB, checkDBConnection } from './controllers/mongodb.js';
 
 import testRoutes from './routes/test_route.js';
 import charactersRoute from './routes/Characters.js';
-import combatRoute from './routes/Combat.js';
+// import combatRoute from './routes/Combat.js';
 import gameStateRoute from './routes/GameState.js'; 
 import initGameRoute from './routes/InitGame.js';
 
@@ -17,7 +17,7 @@ app.use(checkDBConnection);
 
 // Use API routes
 app.use('/api/getCharacters', charactersRoute);
-app.use('/api/combat', combatRoute);
+// app.use('/api/combat', combatRoute);
 app.use('/api/getGameState', gameStateRoute);
 app.use('/api/initGame', initGameRoute);
 // Test route

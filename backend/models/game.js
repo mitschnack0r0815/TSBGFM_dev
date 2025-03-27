@@ -16,6 +16,11 @@ const gameSchema = new mongoose.Schema({
     ref: 'Char', // Reference the Char model
     required: true
   }],
+  currentTurn: {
+    type: Number,
+    required: true,
+    default: 0
+  },
   createdAt: {
     type: Date,
     default: Date.now

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import terrainSchema  from './terrain.js';
+// import terrainSchema  from './terrain.js';
 
 const boardSchema = new mongoose.Schema({
   x: {

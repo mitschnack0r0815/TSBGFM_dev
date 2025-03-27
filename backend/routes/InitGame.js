@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
         const game = await GameLib.createGame(players); // Create a new game with provided players
 
         // Return created game
-        console.log('Game created:', game);
+        // console.log('Game created:', game);
         res.json(game);
     } catch (error) {
         res.status(500).json({ error: error.message });
