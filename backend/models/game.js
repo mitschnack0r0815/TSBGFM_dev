@@ -11,6 +11,11 @@ const gameSchema = new mongoose.Schema({
     ref: 'Board', // Reference the Board model
     required: true
   },
+  player: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Player', // Reference the Char model
+    required: true
+  }],
   chars: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Char', // Reference the Char model

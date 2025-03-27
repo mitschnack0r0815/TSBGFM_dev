@@ -7,6 +7,11 @@ const charSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  faction: {
+    type: String,
+    required: true,
+    trim: true
+  },
   life: {
     type: Number,
     required: true,

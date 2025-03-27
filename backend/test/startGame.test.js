@@ -28,6 +28,7 @@ describe('StartGame', () => {
         if (!playerA) {
             playerA = new Char({
                 name: 'Player A',
+                faction: 'Shirts',
                 life: 15,
                 armor: 3,
                 weapons: { 
@@ -55,6 +56,7 @@ describe('StartGame', () => {
         if (!playerB) {
             playerB = new Char({
                 name: 'Player B',
+                faction: 'Blouses',
                 life: 12,
                 armor: 4,
                 weapons: { 
