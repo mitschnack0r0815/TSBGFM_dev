@@ -11,14 +11,9 @@ const gameSchema = new mongoose.Schema({
     ref: 'Board', // Reference the Board model
     required: true
   },
-  player: [{
+  players: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Player', // Reference the Char model
-    required: true
-  }],
-  chars: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Char', // Reference the Char model
     required: true
   }],
   currentTurn: {
@@ -26,6 +21,10 @@ const gameSchema = new mongoose.Schema({
     required: true,
     default: 0
   },
+  turnList: [{
+    type: String,
+    required: true
+  }],
   createdAt: {
     type: Date,
     default: Date.now

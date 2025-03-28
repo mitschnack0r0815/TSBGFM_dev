@@ -1,7 +1,12 @@
 import mongoose from 'mongoose';
 import weaponSchema from './weapon.js';
 
-const charSchema = new mongoose.Schema({
+const unitSchema = new mongoose.Schema({
+  id : {
+    type: Number,
+    required: true,
+    unique: true
+  },
   name: {
     type: String,
     required: true,
@@ -51,4 +56,4 @@ const charSchema = new mongoose.Schema({
   }
 });
 
-export default mongoose.model('Char', charSchema);
+export default mongoose.model('Unit', unitSchema);

@@ -1,6 +1,11 @@
 import mongoose from 'mongoose';
 
 const playerSchema = new mongoose.Schema({
+  id : {
+    type: Number,
+    required: true,
+    unique: true
+  },
   playerName: {
     type: String,
     required: true,
@@ -11,9 +16,9 @@ const playerSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  charList: [{
+  units: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'CharList', 
+    ref: 'Unit', // Reference the Char model
     required: true
   }],
   initiative: {
@@ -27,20 +32,6 @@ const playerSchema = new mongoose.Schema({
     default: 2
   },
 });
-
-const charListSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  amount: {
-    type: Number,
-    required: true,
-    default: 1
-  },
-});
-
-const CharList = mongoose.model('CharList', charListSchema);
 
 export const Player = mongoose.model('Player', playerSchema);
 export default Player;
